@@ -1,14 +1,17 @@
 package com.example.tokarev.mvvm
 
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkInfo
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.ProgressBar
-import android.widget.TextView
+import android.widget.*
+import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
@@ -23,6 +26,7 @@ class GifFragment : Fragment() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -30,6 +34,7 @@ class GifFragment : Fragment() {
         val gifInflater = inflater.inflate(R.layout.fragment_gif, container, false)
 
         val gifViewModel by lazy { ViewModelProvider(this).get(GifViewModel::class.java) }
+
         gifViewModel.getAllFromLatestRoom()
 
         val gifView: ImageView = gifInflater.findViewById(R.id.gif_view)

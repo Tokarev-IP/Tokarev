@@ -8,6 +8,7 @@ import com.example.tokarev.api.ResultData
 import com.example.tokarev.db.LatestEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.net.UnknownHostException
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.properties.Delegates
@@ -29,21 +30,22 @@ class GifViewModel: ViewModel() {
     fun getLatestData() = latestLiveData
 
     fun clickGo(){
-        viewModelScope.launch(Dispatchers.IO) {
-            if (latestDataList.size - number != 1) {
-                number++
-                postDataToLive()
-            }
-            if (latestDataList.size - number < 2) {
-                numberApi++
-                try {
-                    insertToArrayList(gifRep.getLatestData(numberApi).result, numberApi)
-                } catch (e: Throwable){
-                    Log.e("API", e.toString())
+        if (latestDataList.isNotEmpty()) {
+            viewModelScope.launch(Dispatchers.IO) {
+                if (latestDataList.size - number != 1) {
+                    number++
+                    postDataToLive()
+                }
+                if (latestDataList.size - number < 2) {
+                    numberApi++
+                    try {
+                        insertToArrayList(gifRep.getLatestData(numberApi).result, numberApi)
+                    } catch (e: Throwable) {
+                        Log.e("API", e.toString())
+                    }
                 }
             }
         }
-
     }
 
     private fun postDataToLive(){
@@ -79,7 +81,8 @@ class GifViewModel: ViewModel() {
                         numberApi = roomData[roomData.size - 2].number
                         postDataToLive()
                     }
-                } catch (e: Throwable) {
+                }
+                catch (e: Throwable) {
                     Log.e("API", e.toString())
                 }
             }
