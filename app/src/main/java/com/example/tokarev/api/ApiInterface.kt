@@ -7,13 +7,13 @@ import retrofit2.http.Path
 
 interface ApiInterface {
 
-    @GET("/latest/{page_number}?json=true")
-    fun getLatestGif(
-        @Path("page_number") pageNumber: Int,
-    ): Single<ApiData>
+//    @GET("/latest/{page_number}?json=true")
+//    fun getLatestGifRx(
+//        @Path("page_number") pageNumber: Int,
+//    ): Single<ApiData>
 
-    @GET("latest")
-    suspend fun getLatestGifCor(
-        @Query("page_number") pageNumber: String,
+    @GET("/latest/{page_number}?json=true")
+    suspend fun getLatestGif(
+        @Path("page_number") pageNumber: Int,
     ): ApiData
 }

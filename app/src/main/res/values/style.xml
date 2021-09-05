@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="TextViewDescription">
+        <item name="android:textSize">17sp</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:background">#00000000</item>
+    </style>
+
+    <style name="RoundShape" parent="Widget.AppCompat.Button">
+        <item name="android:radius">5dp</item>
+        <item name="android:colorButtonNormal">#FFFFFF</item>
+        <item name="android:backgroundTint">#00FFFFFF</item>
+    </style>
+
+</resources>
