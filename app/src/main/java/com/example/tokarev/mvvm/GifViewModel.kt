@@ -45,7 +45,7 @@ class GifViewModel: ViewModel() {
                     }
                 }
             }
-        }
+        } else getAllFromLatestRoom()
     }
 
     private fun postDataToLive(){
