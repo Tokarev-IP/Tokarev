@@ -19,5 +19,9 @@ class GifRepository {
         return db.getAllFromLatest()
     }
 
+    suspend fun insertToRoom(data: LatestEntity){
+            db.insertLatestGif(data)
+    }
+
 
 }

@@ -8,9 +8,39 @@
     </style>
 
     <style name="RoundShape" parent="Widget.AppCompat.Button">
-        <item name="android:radius">5dp</item>
-        <item name="android:colorButtonNormal">#FFFFFF</item>
-        <item name="android:backgroundTint">#00FFFFFF</item>
+        <item name="android:textSize">17sp</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:background">#00000000</item>
+
     </style>
+
+<!--    <style name="BaseText">-->
+<!--        <item name="android:textColor">@color/white</item>-->
+<!--        <item name="fontFamily">@font/graphik_lcg_regular</item>-->
+<!--    </style>-->
+
+<!--    <style name="BaseText.ContentDescription">-->
+<!--        <item name="android:textSize">16sp</item>-->
+<!--        <item name="lineHeight">20sp</item>-->
+<!--    </style>-->
+
+<!--    <style name="BaseText.ProfileName">-->
+<!--        <item name="android:textSize">18sp</item>-->
+<!--        <item name="lineHeight">16sp</item>-->
+<!--    </style>-->
+
+<!--    <style name="CircleImageView">-->
+<!--        <item name="cornerFamily">rounded</item>-->
+<!--        <item name="cornerSize">50%</item>-->
+<!--    </style>-->
+
+<!--    <style name="DefaultButton" parent="Widget.AppCompat.Button.Colored" >-->
+<!--        <item name="android:textStyle">bold|normal</item>-->
+<!--        <item name="android:textSize">14sp</item>-->
+<!--        <item name="android:textColor">@drawable/text_color_selector</item>-->
+<!--        <item name="android:textAllCaps">false</item>-->
+<!--        <item name="android:fontFamily">@font/graphik_lcg_regular</item>-->
+<!--        <item name="android:shape">oval</item>-->
+<!--    </style>-->
 
 </resources>

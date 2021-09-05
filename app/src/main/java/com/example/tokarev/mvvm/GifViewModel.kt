@@ -29,14 +29,25 @@ class GifViewModel: ViewModel() {
     fun getLatestData() = latestLiveData
 
     fun clickGo(){
-        number++
-        Log.d("API", "number is $number")
-        latestLiveData.postValue(latestDataList[number])
-        if (number-2<latestDataList.size)
-            viewModelScope.launch(Dispatchers.IO) {
-                numberApi++
-                insertToArrayList(gifRep.getLatestData(numberApi).result, numberApi)
+        viewModelScope.launch(Dispatchers.IO) {
+            if (latestDataList.size - number != 1) {
+                number++
+                postDataToLive()
             }
+            if (latestDataList.size - number < 2) {
+                numberApi++
+                try {
+                    insertToArrayList(gifRep.getLatestData(numberApi).result, numberApi)
+                } catch (e: Throwable){
+                    Log.e("API", e.toString())
+                }
+            }
+        }
+
+    }
+
+    private fun postDataToLive(){
+        latestLiveData.postValue(latestDataList[number])
     }
 
     fun clickBack(){
@@ -46,32 +57,67 @@ class GifViewModel: ViewModel() {
         }
     }
 
-    fun getDataFromApi(number: Int){
-        try {
+    fun getDataFromApi(){
             viewModelScope.launch(Dispatchers.IO) {
-                insertToArrayList(gifRep.getLatestData(numberApi).result, number)
-                latestLiveData.postValue(latestDataList[number])
-                Log.d("API", gifRep.getLatestData(number).toString())
+                try {
+                    insertToArrayList(gifRep.getLatestData(numberApi).result, numberApi)
+                    postDataToLive()
+                } catch (e: Throwable){
+                    Log.e("API", e.toString())
+                }
             }
-        }
-        catch (e: Throwable){
-            Log.d("API", e.toString())
-        }
     }
 
     fun getAllFromLatestRoom(){
-        viewModelScope.launch(Dispatchers.IO) {
-            gifRep.getAllFromRoom()
+            viewModelScope.launch(Dispatchers.IO) {
+                try {
+                    val roomData = gifRep.getAllFromRoom()
+                    if (roomData.isEmpty()) {
+                        getDataFromApi()
+                    } else {
+                        insertToArrayListFromRoom(roomData)
+                        numberApi = roomData[roomData.size - 2].number
+                        postDataToLive()
+                    }
+                } catch (e: Throwable) {
+                    Log.e("API", e.toString())
+                }
+            }
+    }
+
+    private fun insertToArrayListFromRoom(dataList: List<LatestEntity>){
+        for (i in dataList.indices) {
+            latestDataList.add(
+                LatestEntity(
+                    UUID.randomUUID().toString(),
+                    dataList[i].gifUrl,
+                    dataList[i].description,
+                    dataList[i].number
+                )
+            )
         }
     }
 
-    private fun insertToArrayList(dataList: List<ResultData>, number: Int){
-        for (i in dataList.indices)
-            latestDataList.add(LatestEntity(
+    private suspend fun insertToArrayList(dataList: List<ResultData>, number: Int){
+        for (i in dataList.indices) {
+            latestDataList.add(
+                LatestEntity(
+                    UUID.randomUUID().toString(),
+                    dataList[i].gif_url,
+                    dataList[i].description,
+                    number,
+                )
+            )
+            insertToArrayListRoom(LatestEntity(
                 UUID.randomUUID().toString(),
                 dataList[i].gif_url,
                 dataList[i].description,
                 number,
             ))
+        }
+    }
+
+    private suspend fun insertToArrayListRoom(data: LatestEntity){
+            gifRep.insertToRoom(data)
     }
 }

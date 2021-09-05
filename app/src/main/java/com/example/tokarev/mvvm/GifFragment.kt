@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.example.tokarev.R
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class GifFragment : Fragment() {
 
@@ -29,23 +30,23 @@ class GifFragment : Fragment() {
         val gifInflater = inflater.inflate(R.layout.fragment_gif, container, false)
 
         val gifViewModel by lazy { ViewModelProvider(this).get(GifViewModel::class.java) }
-        gifViewModel.getDataFromApi(0)
+        gifViewModel.getAllFromLatestRoom()
 
         val gifView: ImageView = gifInflater.findViewById(R.id.gif_view)
-        val progressBar: ProgressBar = gifInflater.findViewById(R.id.progress_bar_view)
         val buttonGo: Button = gifInflater.findViewById(R.id.button_go)
         val buttonBack: Button = gifInflater.findViewById(R.id.button_back)
         val textDescription: TextView = gifInflater.findViewById(R.id.description_textView)
+        val bottomNav: BottomNavigationView = gifInflater.findViewById(R.id.nav_bar)
 
         gifViewModel.getLatestData().observe(viewLifecycleOwner, {
-            progressBar.visibility = View.VISIBLE
             Glide
                 .with(this)
                 .load(it.gifUrl)
                 .centerCrop()
+                .placeholder(R.drawable.ic_baseline_image_search_24_blue)
+                .error(R.drawable.ic_baseline_error_24)
                 .into(gifView)
             textDescription.text = it.description
-            progressBar.visibility = View.INVISIBLE
         })
 
         buttonGo.setOnClickListener {
@@ -54,6 +55,14 @@ class GifFragment : Fragment() {
 
         buttonBack.setOnClickListener {
             gifViewModel.clickBack()
+        }
+
+        bottomNav.setOnNavigationItemReselectedListener {
+            when (it.itemId) {
+                R.id.action_one ->{}
+                R.id.action_two->{}
+                R.id.action_three->{}
+            }
         }
 
         return gifInflater
